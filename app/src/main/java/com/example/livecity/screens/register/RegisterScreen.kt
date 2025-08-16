@@ -14,18 +14,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.getValue
 
 @Composable
-fun RegisterScreen(){
-
+fun RegisterScreen(
+    viewModel: RegisterScreenViewModel = hiltViewModel()
+){
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
+    FieldsRegister(
+        onRegisterClick = viewModel::onRegisterClick,
+        onEmailChange = viewModel::onEmailChange,
+        onPasswordChange = viewModel::onPasswordChange,
+        onConfirmPasswordChange = viewModel::onConfirmPasswordChange,
+        onNameChange = viewModel::onNameChange,
+        uiState = uiState
+    )
 }
 
 @Composable
 fun FieldsRegister(
-    onLoginClick: () -> Unit,
+    onRegisterClick: () -> Unit,
+    onNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    uiState: LoginScreenState
+    onConfirmPasswordChange: (String) -> Unit,
+    uiState: RegisterScreenState
 ){
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -33,9 +48,9 @@ fun FieldsRegister(
     ) {
 
         OutlinedTextField(
-            onValueChange = onEmailChange,
+            onValueChange = onNameChange,
             value = uiState.email,
-            label = { Text(text = "Nome")},
+            label = { Text(text = "Name")},
             modifier = Modifier.padding(top = 100.dp).fillMaxWidth(0.65f)
         )
         OutlinedTextField(
@@ -53,14 +68,14 @@ fun FieldsRegister(
             modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f)
         )
         OutlinedTextField(
-            onValueChange = onPasswordChange,
-            value = uiState.password,
-            label = { Text(text = "Password")},
+            onValueChange = onConfirmPasswordChange,
+            value = uiState.confirmPassword,
+            label = { Text(text = "Repeat Password")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f)
         )
         Button(
-            onClick = onLoginClick,
+            onClick = onRegisterClick,
             colors = ButtonDefaults.buttonColors(Color.Black),
             modifier = Modifier.fillMaxWidth(0.65f).padding(top = 100.dp)
         ) {
