@@ -9,6 +9,9 @@ plugins {
 
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+
+    // Add secrets-gradle-plugin here
+    id ("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -73,4 +76,8 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.56.2")
     ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+
+    // Android Maps Compose composables for the Maps SDK for Android
+    implementation("com.google.maps.android:maps-compose:6.7.1")
+    implementation ("com.google.android.gms:play-services-location:21.2.0")  // para localização
 }
