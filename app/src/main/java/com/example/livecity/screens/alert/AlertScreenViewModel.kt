@@ -2,10 +2,12 @@ package com.example.livecity.screens.alert
 
 import androidx.lifecycle.ViewModel
 import com.example.livecity.R
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+@HiltViewModel
 class AlertScreenViewModel: ViewModel()  {
     private val _uiState = MutableStateFlow(AlertScreenUIState())
     val uiState: StateFlow<AlertScreenUIState> = _uiState.asStateFlow()

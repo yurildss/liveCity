@@ -44,23 +44,25 @@ fun AlertScreen(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlertForm(){
-    val listOfAlerts = listOf(
-        Pair<String, Int>("Danger", R.drawable.dangerous)
-    )
+fun AlertForm(
+    uiState: AlertScreenUIState,
+    onTitleChange: (String) -> Unit,
+    onDescriptionChange: (String) -> Unit,
+    listOfAlerts: List<Pair<String, Int>>
+){
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
-            onValueChange = {},
-            value = "",
+            onValueChange = onTitleChange,
+            value = uiState.title,
             label = { Text(text = "Title")},
             modifier = Modifier.padding(top = 100.dp).fillMaxWidth(0.65f)
         )
         OutlinedTextField(
-            onValueChange = {},
-            value = "",
+            onValueChange = onDescriptionChange,
+            value = uiState.description,
             label = { Text(text = "Description")},
             modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f)
         )
