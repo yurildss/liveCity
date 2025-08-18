@@ -1,21 +1,37 @@
 package com.example.livecity.screens.alert
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.example.livecity.R
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun AlertScreen(){
@@ -25,7 +41,9 @@ fun AlertScreen(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlertForm(){
-    val listOfAlerts = listOf(Pair<String, Int>("Danger", R.drawable.dangerous_50dp_ea3323_fill0_wght400_grad0_opsz48))
+    val listOfAlerts = listOf(
+        Pair<String, Int>("Danger", R.drawable.dangerous_50dp_ea3323_fill0_wght400_grad0_opsz48)
+    )
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -69,8 +87,61 @@ fun AlertForm(){
                 expanded = false,
                 onDismissRequest = {}
             ) {
+                listOfAlerts.forEach {
+                    DropdownMenuItem(
+                        text = { Text(text = it.first) },
+                        onClick = {}
+                    )
+                }
+            }
+        }
 
+    }
+}
+
+@Composable
+fun UserLocationMap(){
+    var isMapLoaded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    val fusedLocationClient = remember {
+        LocationServices.getFusedLocationProviderClient(context)
+    }
+    var currentLocation by remember { mutableStateOf<LatLng?>(null) }
+    val cameraPositionState = rememberCameraPositionState()
+
+    var markerPosition by remember { mutableStateOf<LatLng?>(null) }
+
+    LaunchedEffect(Unit) {
+        if (ContextCompat.checkSelfPermission(
+                context, Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                location?.let {
+                    val latLng = LatLng(it.latitude, it.longitude)
+                    currentLocation = latLng
+
+                    cameraPositionState.position = CameraPosition.fromLatLngZoom(latLng, 15f)
+                }
             }
         }
     }
+
+    GoogleMap(
+        modifier = Modifier.fillMaxSize(),
+        onMapLoaded = { isMapLoaded = true },
+        cameraPositionState = cameraPositionState,
+        properties = com.google.maps.android.compose.MapProperties(
+            isMyLocationEnabled = true
+        ),
+        onMapLongClick = {
+            markerPosition = it
+        }
+    ){
+        markerPosition?.let {
+            Marker(state = com.google.maps.android.compose.MarkerState(position = it))
+        }
+    }
+
 }

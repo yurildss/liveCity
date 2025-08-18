@@ -21,6 +21,7 @@ import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapsComposeExperimentalApi
 import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.clustering.Clustering
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberUpdatedMarkerState
@@ -46,7 +47,8 @@ fun Map(){
     var currentLocation by remember { mutableStateOf<LatLng?>(null) }
     val cameraPositionState = rememberCameraPositionState()
 
-    // pede localização uma vez
+    var markerPosition by remember { mutableStateOf<LatLng?>(null) }
+
     LaunchedEffect(Unit) {
         if (ContextCompat.checkSelfPermission(
                 context, Manifest.permission.ACCESS_FINE_LOCATION
@@ -72,7 +74,10 @@ fun Map(){
         cameraPositionState = cameraPositionState,
         properties = com.google.maps.android.compose.MapProperties(
             isMyLocationEnabled = true
-        )
+        ),
+        onMapLongClick = {
+            markerPosition = it
+        }
     ){
         Clustering(items = listOf(
 
@@ -82,12 +87,14 @@ fun Map(){
             MyClusterItem(LatLng(1.65, 103.87), "Singapore", "Marker in Singapore"),
         )
         )
-//        Marker(
-//            state = singaporeMarkerState,
-//            title = "Singapore",
-//            snippet = "Marker in Singapore",
-//            icon = BitmapDescriptorFactory.fromResource(R.drawable.dangerous_50dp_ea3323_fill0_wght400_grad0_opsz48)
-//        )
+        markerPosition?.let {
+            Marker(
+                state = MarkerState(position = it),
+                title = "Singapore",
+                snippet = "Marker in Singapore",
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.dangerous_50dp_ea3323_fill0_wght400_grad0_opsz48)
+            )
+        }
     }
 
 }
