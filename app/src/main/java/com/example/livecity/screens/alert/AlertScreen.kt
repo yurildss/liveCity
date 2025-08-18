@@ -2,12 +2,16 @@ package com.example.livecity.screens.alert
 
 import android.Manifest
 import android.content.pm.PackageManager
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -42,7 +46,7 @@ fun AlertScreen(){
 @Composable
 fun AlertForm(){
     val listOfAlerts = listOf(
-        Pair<String, Int>("Danger", R.drawable.dangerous_50dp_ea3323_fill0_wght400_grad0_opsz48)
+        Pair<String, Int>("Danger", R.drawable.dangerous)
     )
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -127,21 +131,38 @@ fun UserLocationMap(){
             }
         }
     }
-
-    GoogleMap(
-        modifier = Modifier.fillMaxSize(),
-        onMapLoaded = { isMapLoaded = true },
-        cameraPositionState = cameraPositionState,
-        properties = com.google.maps.android.compose.MapProperties(
-            isMyLocationEnabled = true
-        ),
-        onMapLongClick = {
-            markerPosition = it
-        }
+    Box(
+        modifier = Modifier.fillMaxSize()
     ){
-        markerPosition?.let {
-            Marker(state = com.google.maps.android.compose.MarkerState(position = it))
+        GoogleMap(
+            onMapLoaded = { isMapLoaded = true },
+            cameraPositionState = cameraPositionState,
+            properties = com.google.maps.android.compose.MapProperties(
+                isMyLocationEnabled = true
+            ),
+            onMapLongClick = {
+                markerPosition = it
+            }
+        ){
+            markerPosition?.let {
+                Marker(state = com.google.maps.android.compose.MarkerState(position = it))
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Button(onClick = {}) {
+                Text("Use my actual location")
+            }
+            markerPosition?.let {
+                Button(onClick = {}) {
+                    Text("Set this location")
+                }
+            }
         }
     }
-
 }
