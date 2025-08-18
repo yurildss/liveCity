@@ -81,4 +81,7 @@ dependencies {
     implementation("com.google.maps.android:maps-compose:6.7.1")
     implementation ("com.google.android.gms:play-services-location:21.2.0")  // para localização
     implementation ("com.google.maps.android:maps-compose-utils:6.1.0")   // Utils (inclui Clustering)
+
+    implementation ("com.google.accompanist:accompanist-permissions:0.36.0")
+
 }

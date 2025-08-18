@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import com.example.livecity.R
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -31,7 +33,7 @@ fun FeedMapScreen(){
 
 }
 
-@OptIn(MapsComposeExperimentalApi::class)
+@OptIn(MapsComposeExperimentalApi::class, ExperimentalPermissionsApi::class)
 @Composable
 fun Map(){
 
@@ -48,7 +50,9 @@ fun Map(){
     val cameraPositionState = rememberCameraPositionState()
 
     var markerPosition by remember { mutableStateOf<LatLng?>(null) }
-
+    val locationPermissionState = rememberPermissionState(
+        android.Manifest.permission.ACCESS_FINE_LOCATION
+    )
     LaunchedEffect(Unit) {
         if (ContextCompat.checkSelfPermission(
                 context, Manifest.permission.ACCESS_FINE_LOCATION
@@ -63,9 +67,11 @@ fun Map(){
                     cameraPositionState.position = CameraPosition.fromLatLngZoom(latLng, 15f)
                 }
             }
+        }else{
+            // Request the location permission if it has not been granted
+            locationPermissionState.launchPermissionRequest()
         }
     }
-
 
     // Add GoogleMap here
     GoogleMap(
