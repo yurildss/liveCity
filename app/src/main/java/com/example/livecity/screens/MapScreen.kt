@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapsComposeExperimentalApi
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
@@ -37,8 +39,11 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberUpdatedMarkerState
 
 @Composable
-fun FeedMapScreen(){
-
+fun FeedMapScreen(modifier: Modifier = Modifier){
+    Scaffold(
+        modifier = modifier,
+        bottomBar = {},
+    )
 }
 
 @OptIn(MapsComposeExperimentalApi::class, ExperimentalPermissionsApi::class)
@@ -56,7 +61,7 @@ fun Map(){
 
     var markerPosition by remember { mutableStateOf<LatLng?>(null) }
     val locationPermissionState = rememberPermissionState(
-        android.Manifest.permission.ACCESS_FINE_LOCATION
+        Manifest.permission.ACCESS_FINE_LOCATION
     )
     LaunchedEffect(Unit) {
         if (ContextCompat.checkSelfPermission(
@@ -81,7 +86,7 @@ fun Map(){
         GoogleMap(
             onMapLoaded = { isMapLoaded = true },
             cameraPositionState = cameraPositionState,
-            properties = com.google.maps.android.compose.MapProperties(
+            properties = MapProperties(
                 isMyLocationEnabled = true
             ),
             onMapLongClick = {

@@ -53,6 +53,10 @@ class AlertScreenViewModel: ViewModel()  {
     fun setUseSetLocation(useSetLocation: Boolean){
         _uiState.value = _uiState.value.copy(useSetLocation = useSetLocation)
     }
+
+    fun setExpandedGoogleMaps(){
+        _uiState.value = _uiState.value.copy(expandedGoogleMaps = !_uiState.value.expandedGoogleMaps)
+    }
 }
 
 data class AlertScreenUIState(

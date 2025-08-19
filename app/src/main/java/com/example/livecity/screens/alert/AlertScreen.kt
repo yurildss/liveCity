@@ -21,11 +21,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.livecity.R
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -48,24 +44,28 @@ fun AlertScreen(
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    AlertForm(
-        uiState = uiState,
-        onTitleChange = viewModel::setTitle,
-        onDescriptionChange = viewModel::setDescription,
-        listOfAlerts = uiState.listOfAlerts,
-        type = viewModel::setType,
-        typeSelected = uiState.type.first,
-        updateExpanded = viewModel::updateExpanded,
-        onMapLoad = viewModel::onMapLoaded
-    )
-    UserLocationMap(
-        onMapLoad = viewModel::onMapLoaded,
-        setCurrLocation = viewModel::setCurrentLocation,
-        markerPosition = uiState.markerPositionSelectedByUser,
-        setMarkerPosition = viewModel::setMarkerPositionSelectedByUser,
-        setUseMyLocation = viewModel::setUseMyLocation,
-        setUseSetLocation = viewModel::setUseSetLocation
-    )
+    if(!uiState.expandedGoogleMaps){
+        AlertForm(
+            uiState = uiState,
+            onTitleChange = viewModel::setTitle,
+            onDescriptionChange = viewModel::setDescription,
+            listOfAlerts = uiState.listOfAlerts,
+            type = viewModel::setType,
+            typeSelected = uiState.type.first,
+            updateExpanded = viewModel::updateExpanded,
+            onMapLoad = viewModel::onMapLoaded
+        )
+    }
+    if (uiState.expandedGoogleMaps) {
+        UserLocationMap(
+            onMapLoad = viewModel::onMapLoaded,
+            setCurrLocation = viewModel::setCurrentLocation,
+            markerPosition = uiState.markerPositionSelectedByUser,
+            setMarkerPosition = viewModel::setMarkerPositionSelectedByUser,
+            setUseMyLocation = viewModel::setUseMyLocation,
+            setUseSetLocation = viewModel::setUseSetLocation
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
