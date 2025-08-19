@@ -28,6 +28,10 @@ class AlertScreenViewModel: ViewModel()  {
         _uiState.value = _uiState.value.copy(position = position)
     }
 
+    fun updateExpanded(){
+        _uiState.value = _uiState.value.copy(expanded = !_uiState.value.expanded)
+    }
+
 }
 
 data class AlertScreenUIState(
@@ -41,5 +45,6 @@ data class AlertScreenUIState(
         Pair<String, Int>("Building", R.drawable.build_50dp_ea3323_fill0_wght400_grad0_opsz48),
         Pair<String, Int>("Car crash", R.drawable.car_crash_50dp_ea3323_fill0_wght400_grad0_opsz48),
         Pair<String, Int>("Rain/Snow/Storm", R.drawable.thunderstorm_50dp_ea3323_fill0_wght400_grad0_opsz48),
-    )
+    ),
+    val expanded: Boolean = false
 )

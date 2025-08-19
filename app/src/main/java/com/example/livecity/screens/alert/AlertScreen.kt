@@ -48,7 +48,10 @@ fun AlertForm(
     uiState: AlertScreenUIState,
     onTitleChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
-    listOfAlerts: List<Pair<String, Int>>
+    listOfAlerts: List<Pair<String, Int>>,
+    type: (Pair<String, Int>) -> Unit,
+    typeSelected: String,
+    updateExpanded: () -> Unit
 ){
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -68,11 +71,11 @@ fun AlertForm(
         )
         ExposedDropdownMenuBox(
             modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f),
-            expanded = false,
-            onExpandedChange = {}
+            expanded = uiState.expanded,
+            onExpandedChange = {updateExpanded()}
         ) {
             OutlinedTextField(
-                value = "",
+                value = typeSelected,
                 readOnly = true,
                 onValueChange = {},
                 modifier = Modifier
@@ -90,13 +93,16 @@ fun AlertForm(
                 }
             )
             ExposedDropdownMenu(
-                expanded = false,
+                expanded = uiState.expanded,
                 onDismissRequest = {}
             ) {
                 listOfAlerts.forEach {
                     DropdownMenuItem(
                         text = { Text(text = it.first) },
-                        onClick = {}
+                        onClick = {
+                            type(Pair(it.first, it.second))
+                            updateExpanded()
+                        }
                     )
                 }
             }
