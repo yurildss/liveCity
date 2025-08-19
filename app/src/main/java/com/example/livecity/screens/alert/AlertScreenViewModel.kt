@@ -2,6 +2,7 @@ package com.example.livecity.screens.alert
 
 import androidx.lifecycle.ViewModel
 import com.example.livecity.R
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class AlertScreenViewModel: ViewModel()  {
+
     private val _uiState = MutableStateFlow(AlertScreenUIState())
     val uiState: StateFlow<AlertScreenUIState> = _uiState.asStateFlow()
 
@@ -32,6 +34,25 @@ class AlertScreenViewModel: ViewModel()  {
         _uiState.value = _uiState.value.copy(expanded = !_uiState.value.expanded)
     }
 
+    fun onMapLoaded(){
+        _uiState.value = _uiState.value.copy(isLoaded = true)
+    }
+
+    fun setCurrentLocation(location: LatLng){
+        _uiState.value = _uiState.value.copy(currentLocation = location)
+    }
+
+    fun setMarkerPositionSelectedByUser(location: LatLng){
+        _uiState.value = _uiState.value.copy(markerPositionSelectedByUser = location)
+    }
+
+    fun setUseMyLocation(useMyLocation: Boolean){
+        _uiState.value = _uiState.value.copy(useMyLocation = useMyLocation)
+    }
+
+    fun setUseSetLocation(useSetLocation: Boolean){
+        _uiState.value = _uiState.value.copy(useSetLocation = useSetLocation)
+    }
 }
 
 data class AlertScreenUIState(
@@ -46,5 +67,11 @@ data class AlertScreenUIState(
         Pair<String, Int>("Car crash", R.drawable.car_crash_50dp_ea3323_fill0_wght400_grad0_opsz48),
         Pair<String, Int>("Rain/Snow/Storm", R.drawable.thunderstorm_50dp_ea3323_fill0_wght400_grad0_opsz48),
     ),
-    val expanded: Boolean = false
+    val expanded: Boolean = false,
+    val isLoaded: Boolean = false,
+    val currentLocation: LatLng? = null,
+    val markerPositionSelectedByUser: LatLng? = null,
+    val useMyLocation: Boolean = false,
+    val useSetLocation: Boolean = false,
+    val expandedGoogleMaps: Boolean = false
 )

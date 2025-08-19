@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -20,15 +21,19 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.livecity.R
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
@@ -38,8 +43,29 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-fun AlertScreen(){
+fun AlertScreen(
+    viewModel: AlertScreenViewModel = hiltViewModel()
+){
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    AlertForm(
+        uiState = uiState,
+        onTitleChange = viewModel::setTitle,
+        onDescriptionChange = viewModel::setDescription,
+        listOfAlerts = uiState.listOfAlerts,
+        type = viewModel::setType,
+        typeSelected = uiState.type.first,
+        updateExpanded = viewModel::updateExpanded,
+        onMapLoad = viewModel::onMapLoaded
+    )
+    UserLocationMap(
+        onMapLoad = viewModel::onMapLoaded,
+        setCurrLocation = viewModel::setCurrentLocation,
+        markerPosition = uiState.markerPositionSelectedByUser,
+        setMarkerPosition = viewModel::setMarkerPositionSelectedByUser,
+        setUseMyLocation = viewModel::setUseMyLocation,
+        setUseSetLocation = viewModel::setUseSetLocation
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +77,8 @@ fun AlertForm(
     listOfAlerts: List<Pair<String, Int>>,
     type: (Pair<String, Int>) -> Unit,
     typeSelected: String,
-    updateExpanded: () -> Unit
+    updateExpanded: () -> Unit,
+    onMapLoad: () -> Unit,
 ){
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -107,22 +134,32 @@ fun AlertForm(
                 }
             }
         }
-
+        Button(
+            onClick = onMapLoad,
+            modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f),
+            colors = ButtonDefaults.buttonColors(Color.Black)
+        ){
+            Text(text = "Add location")
+        }
     }
 }
 
 @Composable
-fun UserLocationMap(){
-    var isMapLoaded by remember { mutableStateOf(false) }
-    val context = LocalContext.current
+fun UserLocationMap(
+    onMapLoad: () -> Unit,
+    setCurrLocation: (LatLng) -> Unit,
+    markerPosition: LatLng?,
+    setMarkerPosition: (LatLng) -> Unit,
+    setUseMyLocation: (Boolean) -> Unit,
+    setUseSetLocation: (Boolean) -> Unit
+){
 
+    val context = LocalContext.current
     val fusedLocationClient = remember {
         LocationServices.getFusedLocationProviderClient(context)
     }
-    var currentLocation by remember { mutableStateOf<LatLng?>(null) }
-    val cameraPositionState = rememberCameraPositionState()
 
-    var markerPosition by remember { mutableStateOf<LatLng?>(null) }
+    val cameraPositionState = rememberCameraPositionState()
 
     LaunchedEffect(Unit) {
         if (ContextCompat.checkSelfPermission(
@@ -132,7 +169,7 @@ fun UserLocationMap(){
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 location?.let {
                     val latLng = LatLng(it.latitude, it.longitude)
-                    currentLocation = latLng
+                    setCurrLocation(latLng)
 
                     cameraPositionState.position = CameraPosition.fromLatLngZoom(latLng, 15f)
                 }
@@ -143,13 +180,13 @@ fun UserLocationMap(){
         modifier = Modifier.fillMaxSize()
     ){
         GoogleMap(
-            onMapLoaded = { isMapLoaded = true },
+            onMapLoaded = { onMapLoad()},
             cameraPositionState = cameraPositionState,
             properties = com.google.maps.android.compose.MapProperties(
                 isMyLocationEnabled = true
             ),
             onMapLongClick = {
-                markerPosition = it
+                setMarkerPosition(it)
             }
         ){
             markerPosition?.let {
@@ -163,11 +200,15 @@ fun UserLocationMap(){
                 .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Button(onClick = {}) {
+            Button(onClick = {
+                setUseMyLocation(true)
+            }) {
                 Text("Use my actual location")
             }
             markerPosition?.let {
-                Button(onClick = {}) {
+                Button(onClick = {
+                    setUseSetLocation(true)
+                }) {
                     Text("Set this location")
                 }
             }

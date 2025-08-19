@@ -45,9 +45,6 @@ fun FeedMapScreen(){
 @Composable
 fun Map(){
 
-    val singapore = LatLng(1.35, 103.87)
-    val singaporeMarkerState = rememberUpdatedMarkerState(position = singapore)
-
     var isMapLoaded by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -92,8 +89,6 @@ fun Map(){
             }
         ){
             Clustering(items = listOf(
-
-                MyClusterItem(singapore, "Singapore", "Marker in Singapore"),
                 MyClusterItem(LatLng(1.45, 103.87), "Singapore", "Marker in Singapore"),
                 MyClusterItem(LatLng(1.55, 103.87), "Singapore", "Marker in Singapore"),
                 MyClusterItem(LatLng(1.65, 103.87), "Singapore", "Marker in Singapore"),
