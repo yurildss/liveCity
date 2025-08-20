@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.livecity.R
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -38,7 +39,10 @@ import com.google.maps.android.compose.clustering.Clustering
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-fun FeedMapScreen(modifier: Modifier = Modifier){
+fun FeedMapScreen(
+    modifier: Modifier = Modifier,
+    viewModel: MapScreenViewModel = hiltViewModel()
+){
     Scaffold(
         modifier = modifier,
         bottomBar = {},

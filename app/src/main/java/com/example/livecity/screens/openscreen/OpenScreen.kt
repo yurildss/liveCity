@@ -20,9 +20,13 @@ import androidx.compose.ui.unit.sp
 import com.example.livecity.ui.theme.LiveCityTheme
 
 @Composable
-fun Greeting() {
+fun Greeting(
+    modifier: Modifier = Modifier,
+    onLoginClick: () -> Unit,
+    onRegisterClick: () -> Unit
+) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -51,6 +55,9 @@ fun Greeting() {
 @Composable
 fun GreetingPreview() {
     LiveCityTheme {
-        Greeting()
+        Greeting(
+            onLoginClick = {},
+            onRegisterClick = {}
+        )
     }
 }

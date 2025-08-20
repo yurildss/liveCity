@@ -7,7 +7,9 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 
+@HiltViewModel
 class MapScreenViewModel: ViewModel() {
 
 }
