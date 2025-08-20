@@ -1,4 +1,4 @@
-package com.example.livecity.screens
+package com.example.livecity.screens.feed
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -36,13 +36,13 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.clustering.Clustering
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.google.maps.android.compose.rememberUpdatedMarkerState
 
 @Composable
 fun FeedMapScreen(modifier: Modifier = Modifier){
     Scaffold(
         modifier = modifier,
         bottomBar = {},
+        content = TODO()
     )
 }
 
