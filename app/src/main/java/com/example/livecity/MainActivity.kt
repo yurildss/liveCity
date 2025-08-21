@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.livecity.screens.LiveCityApp
 import com.example.livecity.screens.feed.Map
 import com.example.livecity.ui.theme.LiveCityTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LiveCityTheme {
-                Map()
+                LiveCityApp()
             }
         }
     }

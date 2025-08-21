@@ -29,7 +29,9 @@ fun LiveCityApp(navController: NavHostController = rememberNavController()){
             )
         }
         composable(Destination.REGISTER_SCREEN.name){
-            RegisterScreen()
+            RegisterScreen(
+                onSuccessfulRegister = { navController.navigate(Destination.LOGIN_SCREEN.name) }
+            )
         }
 
         composable(Destination.FEED_SCREEN.name){

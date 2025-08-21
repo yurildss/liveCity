@@ -33,7 +33,9 @@ class RegisterScreenViewModel @Inject constructor(
         _state.value = _state.value.copy(confirmPassword = newConfirmPassword)
     }
 
-    fun onRegisterClick(){
+    fun onRegisterClick(
+        onSuccessfulRegister: () -> Unit
+    ){
         viewModelScope.launch {
             if (state.value.email.isBlank()) {
                 return@launch
@@ -58,6 +60,7 @@ class RegisterScreenViewModel @Inject constructor(
                     password = state.value.password,
                     name = state.value.nome
                 )
+                onSuccessfulRegister()
             }catch (e: Exception){
 
             }

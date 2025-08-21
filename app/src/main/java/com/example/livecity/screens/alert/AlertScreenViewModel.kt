@@ -7,9 +7,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 @HiltViewModel
-class AlertScreenViewModel: ViewModel()  {
+class AlertScreenViewModel @Inject constructor() : ViewModel()  {
 
     private val _uiState = MutableStateFlow(AlertScreenUIState())
     val uiState: StateFlow<AlertScreenUIState> = _uiState.asStateFlow()

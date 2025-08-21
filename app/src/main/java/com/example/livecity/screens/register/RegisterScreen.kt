@@ -17,14 +17,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 
 @Composable
 fun RegisterScreen(
+    onSuccessfulRegister: () -> Unit,
     viewModel: RegisterScreenViewModel = hiltViewModel()
 ){
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     FieldsRegister(
-        onRegisterClick = viewModel::onRegisterClick,
+        onRegisterClick = { viewModel.onRegisterClick(onSuccessfulRegister) },
         onEmailChange = viewModel::onEmailChange,
         onPasswordChange = viewModel::onPasswordChange,
         onConfirmPasswordChange = viewModel::onConfirmPasswordChange,
@@ -49,37 +52,49 @@ fun FieldsRegister(
 
         OutlinedTextField(
             onValueChange = onNameChange,
-            value = uiState.email,
+            value = uiState.nome,
             label = { Text(text = "Name")},
-            modifier = Modifier.padding(top = 100.dp).fillMaxWidth(0.65f)
+            modifier = Modifier
+                .padding(top = 100.dp)
+                .fillMaxWidth(0.65f)
         )
         OutlinedTextField(
             onValueChange = onEmailChange,
             value = uiState.email,
             label = { Text(text = "Email")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f)
+            modifier = Modifier
+                .padding(top = 15.dp)
+                .fillMaxWidth(0.65f)
         )
         OutlinedTextField(
             onValueChange = onPasswordChange,
             value = uiState.password,
             label = { Text(text = "Password")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f)
+            modifier = Modifier
+                .padding(top = 15.dp)
+                .fillMaxWidth(0.65f),
+            visualTransformation = PasswordVisualTransformation()
         )
         OutlinedTextField(
             onValueChange = onConfirmPasswordChange,
             value = uiState.confirmPassword,
             label = { Text(text = "Repeat Password")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f)
+            modifier = Modifier
+                .padding(top = 15.dp)
+                .fillMaxWidth(0.65f),
+            visualTransformation = PasswordVisualTransformation()
         )
         Button(
             onClick = onRegisterClick,
             colors = ButtonDefaults.buttonColors(Color.Black),
-            modifier = Modifier.fillMaxWidth(0.65f).padding(top = 100.dp)
+            modifier = Modifier
+                .fillMaxWidth(0.65f)
+                .padding(top = 100.dp)
         ) {
-            Text(text = "Login")
+            Text(text = "Register")
         }
     }
 }

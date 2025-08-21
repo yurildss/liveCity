@@ -36,14 +36,14 @@ fun Greeting(
             modifier = Modifier.padding(top = 150.dp)
         )
         Button(
-            onClick = {},
+            onClick = onLoginClick,
             colors = ButtonDefaults.buttonColors(Color.Black),
             modifier = Modifier.fillMaxWidth(0.65f).padding(top = 100.dp)
         ) {
             Text(text = "Login")
         }
         OutlinedButton(
-            onClick = {},
+            onClick = onRegisterClick,
             modifier = Modifier.fillMaxWidth(0.65f)
         ) {
             Text(text = "Register")
