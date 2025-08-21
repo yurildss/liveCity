@@ -24,7 +24,7 @@ class LoginScreenViewModel@Inject constructor(
         _state.value = _state.value.copy(password = newPassword)
     }
 
-    fun onLoginClick(){
+    fun onLoginClick(onSuccessfulLogin: () -> Unit){
         viewModelScope.launch {
             if(state.value.email.isBlank()){
                 return@launch
@@ -37,6 +37,7 @@ class LoginScreenViewModel@Inject constructor(
                 email = state.value.email,
                 password = state.value.password
             )
+            onSuccessfulLogin()
         }
     }
 }

@@ -21,21 +21,22 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun LoginScreen(
+    onSuccessfulLogin: () -> Unit,
     viewModel: LoginScreenViewModel = hiltViewModel()
 ){
     val uiState by viewModel.state.collectAsStateWithLifecycle()
 
     Fields(
-        onLoginClick = viewModel::onLoginClick,
+        onLoginClick = { viewModel.onLoginClick(onSuccessfulLogin) },
         onEmailChange = viewModel::onEmailChange,
         onPasswordChange = viewModel::onPasswordChange,
-        uiState = uiState
+        uiState = uiState,
     )
 }
 
 @Composable
 fun Fields(
-    onLoginClick: () -> Unit,
+    onLoginClick: (onSuccessfulLogin: () -> Unit) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     uiState: LoginScreenState
@@ -49,19 +50,25 @@ fun Fields(
             value = uiState.email,
             label = { Text(text = "Email")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            modifier = Modifier.padding(top = 100.dp).fillMaxWidth(0.65f)
+            modifier = Modifier
+                .padding(top = 100.dp)
+                .fillMaxWidth(0.65f)
         )
         OutlinedTextField(
             onValueChange = onPasswordChange,
             value = uiState.password,
             label = { Text(text = "Password")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f)
+            modifier = Modifier
+                .padding(top = 15.dp)
+                .fillMaxWidth(0.65f)
         )
         Button(
-            onClick = onLoginClick,
+            onClick = { onLoginClick } ,
             colors = ButtonDefaults.buttonColors(Color.Black),
-            modifier = Modifier.fillMaxWidth(0.65f).padding(top = 100.dp)
+            modifier = Modifier
+                .fillMaxWidth(0.65f)
+                .padding(top = 100.dp)
         ) {
             Text(text = "Login")
         }

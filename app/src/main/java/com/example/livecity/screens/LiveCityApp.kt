@@ -29,6 +29,5 @@ fun LiveCityApp(navController: NavHostController = rememberNavController()){
             RegisterScreen()
         }
 
-        }
     }
 }
