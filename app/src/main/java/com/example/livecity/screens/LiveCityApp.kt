@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.livecity.screens.feed.FeedMapScreen
 import com.example.livecity.screens.login.LoginScreen
 import com.example.livecity.screens.navigation.Destination
 import com.example.livecity.screens.openscreen.Greeting
@@ -23,11 +24,16 @@ fun LiveCityApp(navController: NavHostController = rememberNavController()){
             )
         }
         composable(Destination.LOGIN_SCREEN.name){
-            LoginScreen()
+            LoginScreen(
+                onSuccessfulLogin = { navController.navigate(Destination.FEED_SCREEN.name) }
+            )
         }
         composable(Destination.REGISTER_SCREEN.name){
             RegisterScreen()
         }
 
+        composable(Destination.FEED_SCREEN.name){
+            FeedMapScreen()
+        }
     }
 }

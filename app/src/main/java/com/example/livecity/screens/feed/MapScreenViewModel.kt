@@ -8,10 +8,17 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class MapScreenViewModel: ViewModel() {
+    private val _uiState = MutableStateFlow(MapScreenUIState())
+    val uiState = _uiState.asStateFlow()
 
+    fun onNavItemClicked(navItem: NavItem){
+        _uiState.value = _uiState.value.copy(selectedNavItem = navItem)
+    }
 }
 
 data class MapScreenUIState(
@@ -36,7 +43,8 @@ data class MapScreenUIState(
             description = "AccountCircle",
             testTag = "accountScreen"
         )
-    )
+    ),
+    val selectedNavItem: NavItem = navItems.first()
 )
 
 data class NavItem(

@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.livecity.R
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -43,10 +46,32 @@ fun FeedMapScreen(
     modifier: Modifier = Modifier,
     viewModel: MapScreenViewModel = hiltViewModel()
 ){
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     Scaffold(
         modifier = modifier,
-        bottomBar = {},
-        content = TODO()
+        bottomBar = {
+            NavigationBar{
+                uiState.navItems.forEach {
+                    NavigationBarItem(
+                        selected = it.testTag == "homeScreen",
+                        onClick = { viewModel.onNavItemClicked(it) },
+                        icon = { it.icon },
+                        label = { Text(text = it.description) }
+                    )
+                }
+            }
+        },
+        content = {
+            Box(modifier = Modifier.padding(it)){
+                when(uiState.selectedNavItem.testTag){
+                    "homeScreen" -> Map()
+                    "searchScreen" -> Text(text = "Search")
+                    "addScreen" -> Text(text = "Add")
+                    "accountScreen" -> Text(text = "Account")
+                }
+            }
+        },
     )
 }
 
