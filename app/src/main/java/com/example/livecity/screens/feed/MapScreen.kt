@@ -54,7 +54,7 @@ fun FeedMapScreen(
             NavigationBar{
                 uiState.navItems.forEach {
                     NavigationBarItem(
-                        selected = it.testTag == "homeScreen",
+                        selected = it.testTag == uiState.selectedNavItem.testTag,
                         onClick = { viewModel.onNavItemClicked(it) },
                         icon = { it.icon },
                         label = { Text(text = it.description) }

@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
@@ -36,7 +37,7 @@ fun LoginScreen(
 
 @Composable
 fun Fields(
-    onLoginClick: (onSuccessfulLogin: () -> Unit) -> Unit,
+    onLoginClick: () -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     uiState: LoginScreenState
@@ -59,12 +60,13 @@ fun Fields(
             value = uiState.password,
             label = { Text(text = "Password")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier
                 .padding(top = 15.dp)
                 .fillMaxWidth(0.65f)
         )
         Button(
-            onClick = { onLoginClick } ,
+            onClick = onLoginClick ,
             colors = ButtonDefaults.buttonColors(Color.Black),
             modifier = Modifier
                 .fillMaxWidth(0.65f)
