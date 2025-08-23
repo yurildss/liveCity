@@ -53,7 +53,7 @@ fun AlertScreen(
             type = viewModel::setType,
             typeSelected = uiState.type.first,
             updateExpanded = viewModel::updateExpanded,
-            onMapLoad = viewModel::onMapLoaded
+            addLocation = viewModel::setExpandedGoogleMaps
         )
     }
     if (uiState.expandedGoogleMaps) {
@@ -78,7 +78,7 @@ fun AlertForm(
     type: (Pair<String, Int>) -> Unit,
     typeSelected: String,
     updateExpanded: () -> Unit,
-    onMapLoad: () -> Unit,
+    addLocation: () -> Unit,
 ){
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -135,7 +135,7 @@ fun AlertForm(
             }
         }
         Button(
-            onClick = onMapLoad,
+            onClick = addLocation,
             modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f),
             colors = ButtonDefaults.buttonColors(Color.Black)
         ){

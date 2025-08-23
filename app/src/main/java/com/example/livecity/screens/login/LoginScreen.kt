@@ -51,6 +51,7 @@ fun Fields(
             value = uiState.email,
             label = { Text(text = "Email")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            singleLine = true,
             modifier = Modifier
                 .padding(top = 100.dp)
                 .fillMaxWidth(0.65f)
@@ -61,6 +62,7 @@ fun Fields(
             label = { Text(text = "Password")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             visualTransformation = PasswordVisualTransformation(),
+            singleLine = true,
             modifier = Modifier
                 .padding(top = 15.dp)
                 .fillMaxWidth(0.65f)

@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.livecity.R
+import com.example.livecity.screens.alert.AlertScreen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.location.LocationServices
@@ -67,7 +68,7 @@ fun FeedMapScreen(
                 when(uiState.selectedNavItem.testTag){
                     "homeScreen" -> Map()
                     "searchScreen" -> Text(text = "Search")
-                    "addScreen" -> Text(text = "Add")
+                    "addScreen" -> AlertScreen()
                     "accountScreen" -> Text(text = "Account")
                 }
             }

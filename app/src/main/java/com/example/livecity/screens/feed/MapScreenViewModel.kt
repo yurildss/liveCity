@@ -36,12 +36,12 @@ data class MapScreenUIState(
         ),
         NavItem(
             icon = Icons.Default.AddCircle,
-            description = "AddCircle",
+            description = "Add Alert",
             testTag = "addScreen"
         ),
         NavItem(
             icon = Icons.Default.AccountCircle,
-            description = "AccountCircle",
+            description = "Account",
             testTag = "accountScreen"
         )
     ),
