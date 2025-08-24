@@ -1,12 +1,17 @@
 package com.example.livecity.screens.alert
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.livecity.R
+import com.example.livecity.model.Evaluation
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,6 +63,32 @@ class AlertScreenViewModel @Inject constructor() : ViewModel()  {
     fun setExpandedGoogleMaps(){
         _uiState.value = _uiState.value.copy(expandedGoogleMaps = !_uiState.value.expandedGoogleMaps)
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun saveAlert(){
+        viewModelScope.launch {
+            if (_uiState.value.title.isBlank()){
+                return@launch
+            }
+            if (_uiState.value.description.isBlank()){
+                return@launch
+            }
+            if(_uiState.value.type.first.isBlank()){
+                return@launch
+            }
+            val alert = Evaluation(
+                id = "",
+                title = _uiState.value.title,
+                description = _uiState.value.description,
+                date = java.time.LocalDate.now(),
+                type = _uiState.value.type,
+                position = if (_uiState.value.useMyLocation) { _uiState.value.currentLocation!!.latitude to _uiState.value.currentLocation!!.longitude } else { _uiState.value.markerPositionSelectedByUser!!.latitude to _uiState.value.markerPositionSelectedByUser!!.longitude },
+                userId = "",
+                dateClose = java.time.LocalDate.now().plusDays(1),
+                closed = false)
+            }
+        }
+
 }
 
 data class AlertScreenUIState(

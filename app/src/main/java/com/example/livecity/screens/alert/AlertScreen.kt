@@ -63,7 +63,8 @@ fun AlertScreen(
             markerPosition = uiState.markerPositionSelectedByUser,
             setMarkerPosition = viewModel::setMarkerPositionSelectedByUser,
             setUseMyLocation = viewModel::setUseMyLocation,
-            setUseSetLocation = viewModel::setUseSetLocation
+            setUseSetLocation = viewModel::setUseSetLocation,
+            updateExpanded = viewModel::setExpandedGoogleMaps
         )
     }
 }
@@ -151,7 +152,8 @@ fun UserLocationMap(
     markerPosition: LatLng?,
     setMarkerPosition: (LatLng) -> Unit,
     setUseMyLocation: (Boolean) -> Unit,
-    setUseSetLocation: (Boolean) -> Unit
+    setUseSetLocation: (Boolean) -> Unit,
+    updateExpanded: () -> Unit
 ){
 
     val context = LocalContext.current
@@ -202,12 +204,14 @@ fun UserLocationMap(
         ) {
             Button(onClick = {
                 setUseMyLocation(true)
+                updateExpanded()
             }) {
                 Text("Use my actual location")
             }
             markerPosition?.let {
                 Button(onClick = {
                     setUseSetLocation(true)
+                    updateExpanded()
                 }) {
                     Text("Set this location")
                 }
