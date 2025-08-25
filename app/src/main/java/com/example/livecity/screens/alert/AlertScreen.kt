@@ -2,6 +2,8 @@ package com.example.livecity.screens.alert
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,8 +40,10 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AlertScreen(
+    onSaved: () -> Unit,
     viewModel: AlertScreenViewModel = hiltViewModel()
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -53,7 +57,9 @@ fun AlertScreen(
             type = viewModel::setType,
             typeSelected = uiState.type.first,
             updateExpanded = viewModel::updateExpanded,
-            addLocation = viewModel::setExpandedGoogleMaps
+            addLocation = viewModel::setExpandedGoogleMaps,
+            onSaveClick = { viewModel::saveAlert },
+            onSaved = onSaved
         )
     }
     if (uiState.expandedGoogleMaps) {
@@ -80,6 +86,9 @@ fun AlertForm(
     typeSelected: String,
     updateExpanded: () -> Unit,
     addLocation: () -> Unit,
+    onSaveClick: () -> Unit,
+    onSaved: () -> Unit
+
 ){
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -89,16 +98,22 @@ fun AlertForm(
             onValueChange = onTitleChange,
             value = uiState.title,
             label = { Text(text = "Title")},
-            modifier = Modifier.padding(top = 100.dp).fillMaxWidth(0.65f)
+            modifier = Modifier
+                .padding(top = 100.dp)
+                .fillMaxWidth(0.65f)
         )
         OutlinedTextField(
             onValueChange = onDescriptionChange,
             value = uiState.description,
             label = { Text(text = "Description")},
-            modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f)
+            modifier = Modifier
+                .padding(top = 15.dp)
+                .fillMaxWidth(0.65f)
         )
         ExposedDropdownMenuBox(
-            modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f),
+            modifier = Modifier
+                .padding(top = 15.dp)
+                .fillMaxWidth(0.65f),
             expanded = uiState.expanded,
             onExpandedChange = {updateExpanded()}
         ) {
@@ -137,10 +152,20 @@ fun AlertForm(
         }
         Button(
             onClick = addLocation,
-            modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f),
+            modifier = Modifier
+                .padding(top = 15.dp)
+                .fillMaxWidth(0.65f),
             colors = ButtonDefaults.buttonColors(Color.Black)
         ){
             Text(text = "Add location")
+        }
+        Button(onClick = {
+                onSaveClick()
+                onSaved()
+            }, modifier = Modifier
+            .padding(top = 15.dp)
+            .fillMaxWidth(0.65f), colors = ButtonDefaults.buttonColors(Color.Black)){
+            Text(text = "Save")
         }
     }
 }
