@@ -1,4 +1,4 @@
-# 🌆 LiveCity
+# 🌆 LiveCity (Ainda em desenvolvimento) 
 
 O **LiveCity** é um aplicativo Android desenvolvido em **Kotlin + Jetpack Compose** que permite que os usuários **marquem ocorrências em tempo real no mapa da cidade**.  
 Ele pode ser usado para reportar situações como:  
