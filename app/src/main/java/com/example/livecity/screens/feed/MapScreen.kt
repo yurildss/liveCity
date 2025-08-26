@@ -2,6 +2,8 @@ package com.example.livecity.screens.feed
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -26,6 +28,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.livecity.R
+import com.example.livecity.model.Evaluation
 import com.example.livecity.screens.alert.AlertScreen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -42,8 +45,10 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.clustering.Clustering
 import com.google.maps.android.compose.rememberCameraPositionState
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FeedMapScreen(
+    onAlertSaved: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MapScreenViewModel = hiltViewModel()
 ){
@@ -66,9 +71,13 @@ fun FeedMapScreen(
         content = {
             Box(modifier = Modifier.padding(it)){
                 when(uiState.selectedNavItem.testTag){
-                    "homeScreen" -> Map()
+                    "homeScreen" -> Map(
+                        listOfAlerts = uiState.listOfEvaluations
+                    )
                     "searchScreen" -> Text(text = "Search")
-                    "addScreen" -> AlertScreen()
+                    "addScreen" -> AlertScreen(
+                        onSaved = onAlertSaved
+                    )
                     "accountScreen" -> Text(text = "Account")
                 }
             }
@@ -78,7 +87,9 @@ fun FeedMapScreen(
 
 @OptIn(MapsComposeExperimentalApi::class, ExperimentalPermissionsApi::class)
 @Composable
-fun Map(){
+fun Map(
+     listOfAlerts: List<ClusterItem>
+){
 
     var isMapLoaded by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -89,7 +100,6 @@ fun Map(){
     var currentLocation by remember { mutableStateOf<LatLng?>(null) }
     val cameraPositionState = rememberCameraPositionState()
 
-    var markerPosition by remember { mutableStateOf<LatLng?>(null) }
     val locationPermissionState = rememberPermissionState(
         Manifest.permission.ACCESS_FINE_LOCATION
     )
@@ -118,51 +128,10 @@ fun Map(){
             cameraPositionState = cameraPositionState,
             properties = MapProperties(
                 isMyLocationEnabled = true
-            ),
-            onMapLongClick = {
-                markerPosition = it
-            }
+            )
         ){
-            Clustering(items = listOf(
-                MyClusterItem(LatLng(1.45, 103.87), "Singapore", "Marker in Singapore"),
-                MyClusterItem(LatLng(1.55, 103.87), "Singapore", "Marker in Singapore"),
-                MyClusterItem(LatLng(1.65, 103.87), "Singapore", "Marker in Singapore"),
-            )
-            )
-            markerPosition?.let {
-                Marker(
-                    state = MarkerState(position = it),
-                    title = "Singapore",
-                    snippet = "Marker in Singapore",
-                    icon = BitmapDescriptorFactory.fromResource(R.drawable.dangerous)
-                )
-            }
-        }
-        Row(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Button(onClick = {}) {
-                Text("Use my actual location")
-            }
-            markerPosition?.let {
-                Button(onClick = {}) {
-                    Text("Set this location")
-                }
-            }
+            Clustering(items = listOfAlerts)
         }
     }
 }
 
-data class MyClusterItem(
-    private val position: LatLng,
-    private val title: String,
-    private val snippet: String
-) : ClusterItem {
-    override fun getPosition(): LatLng = position
-    override fun getTitle(): String = title
-    override fun getSnippet(): String = snippet
-    override fun getZIndex(): Float = 0F
-}

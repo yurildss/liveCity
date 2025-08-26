@@ -35,7 +35,9 @@ fun LiveCityApp(navController: NavHostController = rememberNavController()){
         }
 
         composable(Destination.FEED_SCREEN.name){
-            FeedMapScreen()
+            FeedMapScreen(
+                onAlertSaved = { navController.navigate(Destination.FEED_SCREEN.name) }
+            )
         }
     }
 }
