@@ -1,5 +1,6 @@
 package com.example.livecity.screens.feed
 
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
@@ -44,6 +45,7 @@ class MapScreenViewModel @Inject constructor(
             alerts.forEach {
                 alertList.add(it.toClusterItem())
             }
+            Log.d("Cluster", "Adicionando ${alertList.size} items")
             _uiState.value = _uiState.value.copy(listOfEvaluations = alertList)
         }
     }

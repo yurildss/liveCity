@@ -3,6 +3,7 @@ package com.example.livecity.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.livecity.screens.feed.MyClusterItem
 import com.google.android.gms.maps.GoogleMap
@@ -25,12 +26,21 @@ class MyClusterRenderer(
         super.onBeforeClusterItemRendered(item, markerOptions)
     }
 
+
+
     private fun bitmapFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
-        val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)!!
+        val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
+            ?: return BitmapDescriptorFactory.defaultMarker()
+
         vectorDrawable.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
-        val bitmap = createBitmap(vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
         val canvas = Canvas(bitmap)
         vectorDrawable.draw(canvas)
+
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }

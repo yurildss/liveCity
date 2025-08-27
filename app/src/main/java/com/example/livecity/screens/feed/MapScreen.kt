@@ -3,6 +3,7 @@ package com.example.livecity.screens.feed
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -133,8 +134,20 @@ fun Map(
                 isMyLocationEnabled = true
             )
         ){
-            Clustering(listOfAlerts)
-    }
+            MapEffect { map ->
+                val clusterManager = ClusterManager<MyClusterItem>(context, map)
+                clusterManager.renderer = MyClusterRenderer(context, map, clusterManager)
+
+                Log.d("Cluster", "Adicionando ${listOfAlerts.size} items")
+                clusterManager.addItems(listOfAlerts)
+                clusterManager.cluster()
+
+                map.setOnCameraIdleListener(clusterManager)
+                map.setOnMarkerClickListener(clusterManager)
+            }
+
+
+        }
     }
 }
 
