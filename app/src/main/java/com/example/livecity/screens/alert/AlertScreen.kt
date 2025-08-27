@@ -58,7 +58,7 @@ fun AlertScreen(
             typeSelected = uiState.type.first,
             updateExpanded = viewModel::updateExpanded,
             addLocation = viewModel::setExpandedGoogleMaps,
-            onSaveClick = { viewModel::saveAlert },
+            onSaveClick = { viewModel.saveAlert(onSaved) },
             onSaved = onSaved
         )
     }
@@ -161,7 +161,6 @@ fun AlertForm(
         }
         Button(onClick = {
                 onSaveClick()
-                onSaved()
             }, modifier = Modifier
             .padding(top = 15.dp)
             .fillMaxWidth(0.65f), colors = ButtonDefaults.buttonColors(Color.Black)){

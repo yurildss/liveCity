@@ -18,6 +18,7 @@ class StorageServiceImpl @Inject constructor(
     }
 
     override suspend fun getAlerts(): List<Evaluation> {
-        TODO("Not yet implemented")
+        val allAlerts = firestore.collection("alerts").get().await()
+        return allAlerts.toObjects(Evaluation::class.java)
     }
 }

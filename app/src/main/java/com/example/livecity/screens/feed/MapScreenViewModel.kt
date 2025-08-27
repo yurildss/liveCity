@@ -50,7 +50,7 @@ class MapScreenViewModel @Inject constructor(
 
     fun Evaluation.toClusterItem(): MyClusterItem {
         return MyClusterItem(
-            position = LatLng(position.first, position.second),
+            position = LatLng(position!!.latitude, position.longitude),
             title = title,
             snippet = description
         )
