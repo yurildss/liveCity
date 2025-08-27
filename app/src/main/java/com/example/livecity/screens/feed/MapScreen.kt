@@ -133,17 +133,7 @@ fun Map(
                 isMyLocationEnabled = true
             )
         ){
-            MapEffect { map ->
-                val clusterManager = ClusterManager<MyClusterItem>(context, map)
-
-                clusterManager.renderer = MyClusterRenderer(context, map, clusterManager)
-
-                clusterManager.addItems(listOfAlerts)
-                clusterManager.cluster()
-
-                map.setOnCameraIdleListener(clusterManager)
-                map.setOnMarkerClickListener(clusterManager)
-        }
+            Clustering(listOfAlerts)
     }
     }
 }

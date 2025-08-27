@@ -98,7 +98,7 @@ data class MyClusterItem(
     private val position: LatLng,
     private val title: String,
     private val snippet: String,
-    val iconResId: Int
+    val iconResId: String
 ) : ClusterItem {
     override fun getPosition(): LatLng = position
     override fun getTitle(): String = title

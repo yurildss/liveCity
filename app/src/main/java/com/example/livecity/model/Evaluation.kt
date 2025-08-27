@@ -9,7 +9,7 @@ data class Evaluation(
     val title: String = "",
     val description: String = "",
     val date: com.google.firebase.Timestamp? = null,
-    val type: Type = Type("", 0),
+    val type: Type = Type("", ""),
     val position: GeoPoint? = null,
     val userId: String = "",
     val dateClose: com.google.firebase.Timestamp? = null,

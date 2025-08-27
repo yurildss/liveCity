@@ -8,6 +8,7 @@ import com.example.livecity.R
 import com.example.livecity.model.Evaluation
 import com.example.livecity.model.Type
 import com.example.livecity.service.module.StorageService
+import com.example.livecity.util.getIconResByName
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
@@ -34,7 +35,7 @@ class AlertScreenViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(description = description)
     }
 
-    fun setType(type: Pair<String, Int>){
+    fun setType(type: Pair<String, String>){
         _uiState.value = _uiState.value.copy(type = type)
     }
 
@@ -95,7 +96,7 @@ class AlertScreenViewModel @Inject constructor(
         }
 
 
-    fun Pair<String, Int>.toType(): Type {
+    fun Pair<String, String>.toType(): Type {
         return Type(
             alertType = first,
             alertImage = second
@@ -106,14 +107,14 @@ class AlertScreenViewModel @Inject constructor(
 data class AlertScreenUIState(
     val title: String = "",
     val description: String = "",
-    val type: Pair<String, Int> = "" to 0,
+    val type: Pair<String, String> = "" to "",
     val position: GeoPoint? = null,
     val userId: String = "",
-    val listOfAlerts: List<Pair<String, Int>> = listOf(
-        Pair<String, Int>("Dangerous area", R.drawable.dangerous),
-        Pair<String, Int>("Building", R.drawable.build_50dp_ea3323_fill0_wght400_grad0_opsz48),
-        Pair<String, Int>("Car crash", R.drawable.car_crash_50dp_ea3323_fill0_wght400_grad0_opsz48),
-        Pair<String, Int>("Rain/Snow/Storm", R.drawable.thunderstorm_50dp_ea3323_fill0_wght400_grad0_opsz48),
+    val listOfAlerts: List<Pair<String, String>> = listOf(
+        Pair<String, String>("Dangerous area", "ic_danger"),
+        Pair<String, String>("Building", "ic_building"),
+        Pair<String, String>("Car crash", "ic_car_crash"),
+        Pair<String, String>("Rain/Snow/Storm", "ic_rain_snow_storm"),
     ),
     val expanded: Boolean = false,
     val isLoaded: Boolean = false,
