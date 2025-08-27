@@ -94,8 +94,6 @@ fun FeedMapScreen(
 fun Map(
      listOfAlerts: List<MyClusterItem>
 ){
-
-    var isMapLoaded by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     val fusedLocationClient = remember {
@@ -134,7 +132,7 @@ fun Map(
                 isMyLocationEnabled = true
             )
         ){
-            MapEffect { map ->
+            MapEffect(listOfAlerts) { map ->
                 val clusterManager = ClusterManager<MyClusterItem>(context, map)
                 clusterManager.renderer = MyClusterRenderer(context, map, clusterManager)
 
