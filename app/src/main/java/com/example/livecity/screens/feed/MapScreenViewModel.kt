@@ -40,7 +40,7 @@ class MapScreenViewModel @Inject constructor(
     fun getAllAlerts(){
         viewModelScope.launch {
             val alerts = storageService.getAlerts()
-            val alertList = mutableListOf<ClusterItem>()
+            val alertList = mutableListOf<MyClusterItem>()
             alerts.forEach {
                 alertList.add(it.toClusterItem())
             }
@@ -52,7 +52,8 @@ class MapScreenViewModel @Inject constructor(
         return MyClusterItem(
             position = LatLng(position!!.latitude, position.longitude),
             title = title,
-            snippet = description
+            snippet = description,
+            iconResId = type.alertImage
         )
     }
 
@@ -84,7 +85,7 @@ data class MapScreenUIState(
     val selectedNavItem: NavItem = navItems.first(),
     val isMapLoaded: Boolean = false,
     val listOfAlerts: MutableList<Pair<Double, Double>> = mutableListOf(),
-    val listOfEvaluations: List<ClusterItem> = emptyList()
+    val listOfEvaluations: List<MyClusterItem> = emptyList()
 )
 
 data class NavItem(
@@ -96,7 +97,8 @@ data class NavItem(
 data class MyClusterItem(
     private val position: LatLng,
     private val title: String,
-    private val snippet: String
+    private val snippet: String,
+    val iconResId: Int
 ) : ClusterItem {
     override fun getPosition(): LatLng = position
     override fun getTitle(): String = title

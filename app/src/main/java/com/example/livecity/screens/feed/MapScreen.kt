@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.livecity.R
 import com.example.livecity.model.Evaluation
 import com.example.livecity.screens.alert.AlertScreen
+import com.example.livecity.util.MyClusterRenderer
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.location.LocationServices
@@ -37,7 +38,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
+import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapEffect
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapsComposeExperimentalApi
 import com.google.maps.android.compose.Marker
@@ -88,7 +91,7 @@ fun FeedMapScreen(
 @OptIn(MapsComposeExperimentalApi::class, ExperimentalPermissionsApi::class)
 @Composable
 fun Map(
-     listOfAlerts: List<ClusterItem>
+     listOfAlerts: List<MyClusterItem>
 ){
 
     var isMapLoaded by remember { mutableStateOf(false) }
@@ -124,14 +127,24 @@ fun Map(
     }
     Box(modifier = Modifier.fillMaxSize()){
         GoogleMap(
-            onMapLoaded = { isMapLoaded = true },
+            onMapLoaded = {            },
             cameraPositionState = cameraPositionState,
             properties = MapProperties(
                 isMyLocationEnabled = true
             )
         ){
-            Clustering(items = listOfAlerts)
+            MapEffect { map ->
+                val clusterManager = ClusterManager<MyClusterItem>(context, map)
+
+                clusterManager.renderer = MyClusterRenderer(context, map, clusterManager)
+
+                clusterManager.addItems(listOfAlerts)
+                clusterManager.cluster()
+
+                map.setOnCameraIdleListener(clusterManager)
+                map.setOnMarkerClickListener(clusterManager)
         }
+    }
     }
 }
 
