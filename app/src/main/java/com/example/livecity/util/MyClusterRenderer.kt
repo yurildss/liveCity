@@ -28,16 +28,13 @@ class MyClusterRenderer(
 
 
 
-    private fun bitmapFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
-        val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
-            ?: return BitmapDescriptorFactory.defaultMarker()
+    private fun bitmapFromVector(context: Context, vectorResId: Int, scale: Float = 1.8f): BitmapDescriptor {
+        val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)!!
+        val width = (vectorDrawable.intrinsicWidth * scale).toInt()
+        val height = (vectorDrawable.intrinsicHeight * scale).toInt()
+        vectorDrawable.setBounds(0, 0, width, height)
 
-        vectorDrawable.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         vectorDrawable.draw(canvas)
 
