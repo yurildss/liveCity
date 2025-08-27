@@ -1,5 +1,6 @@
 package com.example.livecity.service.impl
 
+import com.example.livecity.model.User
 import com.example.livecity.service.AccountService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.userProfileChangeRequest
@@ -9,6 +10,9 @@ import javax.inject.Inject
 class AccountServiceImpl @Inject constructor(
     private val auth: FirebaseAuth,
 ) : AccountService {
+
+    override val currentUserName: String
+        get() = auth.currentUser?.displayName.orEmpty()
 
     override val currentUserId: String
         get() = auth.currentUser?.uid.orEmpty()
@@ -40,7 +44,7 @@ class AccountServiceImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun signOut() {
-        TODO("Not yet implemented")
+    override suspend fun logOut() {
+        auth.signOut()
     }
 }

@@ -1,12 +1,16 @@
 package com.example.livecity.service
 
+import com.example.livecity.model.User
+
 interface AccountService {
+
     val currentUserId: String
+    val currentUserName: String
 
     suspend fun register(email: String, password: String, name: String)
     suspend fun authenticate(email: String, password: String)
     suspend fun sendRecoveryEmail(email: String)
     suspend fun deleteAccount()
-    suspend fun signOut()
+    suspend fun logOut()
 
 }

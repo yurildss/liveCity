@@ -36,7 +36,12 @@ fun LiveCityApp(navController: NavHostController = rememberNavController()){
 
         composable(Destination.FEED_SCREEN.name){
             FeedMapScreen(
-                onAlertSaved = { navController.navigate(Destination.FEED_SCREEN.name) }
+                onAlertSaved = { navController.navigate(Destination.FEED_SCREEN.name) },
+                onLogOut = { navController.navigate(Destination.OPEN_SCREEN.name){
+                    popUpTo(Destination.OPEN_SCREEN.name){
+                        inclusive = true
+                    }
+                } }
             )
         }
     }

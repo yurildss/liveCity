@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.livecity.R
 import com.example.livecity.model.Evaluation
+import com.example.livecity.screens.account.AccountScreen
 import com.example.livecity.screens.alert.AlertScreen
 import com.example.livecity.util.MyClusterRenderer
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -53,6 +54,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 @Composable
 fun FeedMapScreen(
     onAlertSaved: () -> Unit,
+    onLogOut: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MapScreenViewModel = hiltViewModel()
 ){
@@ -82,7 +84,9 @@ fun FeedMapScreen(
                     "addScreen" -> AlertScreen(
                         onSaved = onAlertSaved
                     )
-                    "accountScreen" -> Text(text = "Account")
+                    "accountScreen" -> AccountScreen(
+                        onLogOut = onLogOut
+                    )
                 }
             }
         },
