@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -12,6 +13,9 @@ plugins {
 
     // Add secrets-gradle-plugin here
     id ("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+
 }
 
 android {
@@ -83,5 +87,16 @@ dependencies {
     implementation ("com.google.maps.android:maps-compose-utils:6.1.0")   // Utils (inclui Clustering)
 
     implementation ("com.google.accompanist:accompanist-permissions:0.36.0")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+// Retrofit with Kotlin serialization Converter
+
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+
+    // Kotlin serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
 }
