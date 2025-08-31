@@ -8,6 +8,7 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -21,14 +22,14 @@ val client = OkHttpClient.Builder()
 private val retrofit = Retrofit
     .Builder()
     .baseUrl(BASE_URL)
-    .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+    .addConverterFactory(GsonConverterFactory.create())
     .client(client)
     .build()
 
 //https://maps.googleapis.com/maps/api/geocode/json?latlng=-12.2456,-38.9647&key=YOUR_API_KEY
 interface GeocodingService{
     @GET("json")
-    suspend fun getAddressByGeo(@Query("latlng") latLon: String): List<GeocodingResponse>
+    suspend fun getAddressByGeo(@Query("latlng") latLon: String): GeocodingResponse
 }
 
 object GeoCodingApi{

@@ -98,5 +98,6 @@ dependencies {
 
     // Kotlin serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-
+    testImplementation(kotlin("test"))
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
