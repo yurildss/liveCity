@@ -1,6 +1,7 @@
 package com.example.livecity.screens.myReviews
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -43,7 +44,13 @@ fun AlertsList(myAlerts: List<Evaluation?>){
             }
         }else{
             item {
-                Text(text = "No alerts yet")
+                Column(verticalArrangement = Arrangement.Center) {
+                    Text(
+                        text = "No alerts yet",
+                        color = Color.Black,
+                        fontSize = 20.sp,
+                    )
+                }
             }
         }
     }

@@ -62,7 +62,7 @@ fun AccountForm(
             Text(text = "Change password")
         }
         Button(
-            onClick = {  },
+            onClick = onMyAlertsClick,
             colors = ButtonDefaults.buttonColors(Color.Black),
             modifier = Modifier.padding(top = 15.dp).fillMaxWidth(0.65f)
         ) {
