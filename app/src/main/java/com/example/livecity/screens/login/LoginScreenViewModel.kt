@@ -1,6 +1,5 @@
 package com.example.livecity.screens.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.livecity.service.AccountService

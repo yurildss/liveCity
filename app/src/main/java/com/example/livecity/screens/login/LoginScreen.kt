@@ -38,17 +38,16 @@ fun LoginScreen(
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(uiState.message.isNotBlank()) {
-
-            scope.launch {
-                snackbarHostState.showSnackbar(
-                    message = uiState.message,
-                    withDismissAction = true
-                )
-                viewModel.clearMessage()
-            }
-
+    LaunchedEffect(uiState.message) {
+        if (uiState.message.isNotBlank()) {
+            snackbarHostState.showSnackbar(
+                message = uiState.message,
+                withDismissAction = true
+            )
+            viewModel.clearMessage()
+        }
     }
+
     Scaffold(snackbarHost = {
         SnackbarHost(hostState = snackbarHostState)
     }) {
