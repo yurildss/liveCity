@@ -1,14 +1,13 @@
 package com.example.livecity.screens.myReviews
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -16,29 +15,44 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.livecity.R
+import com.example.livecity.model.Evaluation
 
 @Composable
-fun MyAlertsScreen(){
-
+fun MyAlertsScreen(
+    viewModel: ReviewsScreenViewModel = hiltViewModel()
+){
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    AlertsList(myAlerts = uiState.value.myReviews)
 }
 
 @Composable
-fun AlertsList(){
-
+fun AlertsList(myAlerts: List<Evaluation?>){
+    LazyColumn {
+        if (myAlerts.isNotEmpty()){
+            items(myAlerts.size){ index ->
+                AlertsCard(evaluation = myAlerts[index])
+            }
+        }else{
+            item {
+                Text(text = "No alerts yet")
+            }
+        }
+    }
 }
 
 @Composable
-fun AlertsCard(){
-
+fun AlertsCard(
+    evaluation: Evaluation?
+){
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -48,7 +62,7 @@ fun AlertsCard(){
         ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "Car Accident",
+                text = evaluation?.title ?: "",
                 fontWeight = FontWeight.Bold,
                 fontSize = 25.sp,
                 color = Color.Black,
@@ -66,7 +80,7 @@ fun AlertsCard(){
                 contentDescription = "Description icon",
                 modifier = Modifier.padding(10.dp)
             )
-            Text(text = "Description of the alert",
+            Text(text = evaluation?.description ?: "",
                 fontSize = 18.sp,
                 color = Color.Black,
                 fontStyle = FontStyle.Italic,
@@ -79,7 +93,7 @@ fun AlertsCard(){
                 contentDescription = "Location icon",
                 modifier = Modifier.padding(10.dp)
             )
-            Text(text = "Location of the alert",
+            Text(text = evaluation?.formattedAddress ?: "",
                 fontSize = 18.sp,
                 color = Color.Black,
                 modifier = Modifier.padding(10.dp)
@@ -91,7 +105,7 @@ fun AlertsCard(){
                 contentDescription = "Date",
                 modifier = Modifier.padding(10.dp)
             )
-            Text(text = "Date of the alert",
+            Text(text = evaluation?.date.toString(),
                 fontSize = 18.sp,
                 color = Color.Black,
                 modifier = Modifier.padding(10.dp)
@@ -105,7 +119,9 @@ fun AlertsCard(){
 fun AlertsCardPreview(){
     Surface {
         Column(modifier = Modifier.fillMaxSize()) {
-            AlertsCard()
+            AlertsCard(
+                evaluation = Evaluation()
+            )
         }
     }
 }
