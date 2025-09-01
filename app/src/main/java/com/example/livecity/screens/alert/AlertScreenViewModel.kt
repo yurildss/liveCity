@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.livecity.R
 import com.example.livecity.model.Evaluation
+import com.example.livecity.model.GeocodingResponse
 import com.example.livecity.model.Type
+import com.example.livecity.network.GeoCodingApi
+import com.example.livecity.service.AccountService
 import com.example.livecity.service.module.StorageService
 import com.example.livecity.util.getIconResByName
 import com.google.android.gms.maps.model.LatLng
@@ -21,11 +24,28 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AlertScreenViewModel @Inject constructor(
-    private val storageService: StorageService
+    private val storageService: StorageService,
+    private val accountService: AccountService
 ) : ViewModel()  {
+
+    val currentUserId = accountService.currentUserId
 
     private val _uiState = MutableStateFlow(AlertScreenUIState())
     val uiState: StateFlow<AlertScreenUIState> = _uiState.asStateFlow()
+
+    suspend fun getFormattedAddress(): String{
+
+        var formattedAddress : GeocodingResponse
+
+        if (_uiState.value.useMyLocation) {
+            formattedAddress = GeoCodingApi.geocodingService.getAddressByGeo("${_uiState.value.currentLocation!!.latitude},${_uiState.value.currentLocation!!.longitude}")
+            return formattedAddress.results[0].formattedAddress
+        } else {
+            formattedAddress = GeoCodingApi.geocodingService.getAddressByGeo("${_uiState.value.markerPositionSelectedByUser!!.latitude},${_uiState.value.markerPositionSelectedByUser!!.longitude}")
+            return formattedAddress.results[0].formattedAddress
+        }
+
+    }
 
     fun setTitle(title: String){
         _uiState.value = _uiState.value.copy(title = title)
@@ -83,11 +103,19 @@ class AlertScreenViewModel @Inject constructor(
             if(_uiState.value.type.first.isBlank()){
                 return@launch
             }
-            val alert = Evaluation(id = "", title = _uiState.value.title, description = _uiState.value.description, date = Timestamp.now(), type = _uiState.value.type.toType(), position = if (_uiState.value.useMyLocation) {
+            val alert = Evaluation(
+                title = _uiState.value.title,
+                description = _uiState.value.description,
+                date = Timestamp.now(), type = _uiState.value.type.toType(),
+                position = if (_uiState.value.useMyLocation) {
                 GeoPoint(_uiState.value.currentLocation!!.latitude,_uiState.value.currentLocation!!.longitude)
                 } else {
                 GeoPoint(_uiState.value.markerPositionSelectedByUser!!.latitude,_uiState.value.markerPositionSelectedByUser!!.longitude)
-                }, userId = "", dateClose = null, closed = false)
+                },
+                userId = currentUserId,
+                dateClose = null, closed = false,
+                formattedAddress = getFormattedAddress()
+            )
 
             storageService.saveAlert(alert)
             onSaved()

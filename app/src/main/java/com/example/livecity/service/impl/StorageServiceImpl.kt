@@ -21,4 +21,13 @@ class StorageServiceImpl @Inject constructor(
         val allAlerts = firestore.collection("alerts").get().await()
         return allAlerts.toObjects(Evaluation::class.java)
     }
+
+    override suspend fun getAlertsById(id: String): Evaluation? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAlertsByUser(userId: String): List<Evaluation?> {
+        val alerts = firestore.collection("alerts").whereEqualTo("userId", userId).get().await()
+        return alerts.toObjects(Evaluation::class.java)
+    }
 }
