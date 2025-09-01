@@ -25,6 +25,9 @@ class LoginScreenViewModel@Inject constructor(
         _state.value = _state.value.copy(password = newPassword)
     }
 
+    fun clearMessage(){
+        _state.value = _state.value.copy(message = "")
+    }
     fun onLoginClick(onSuccessfulLogin: () -> Unit){
         viewModelScope.launch {
             if(state.value.email.isBlank()){
@@ -34,10 +37,14 @@ class LoginScreenViewModel@Inject constructor(
                 return@launch
             }
 
-            accountService.authenticate(
+            val result = accountService.authenticate(
                 email = state.value.email,
                 password = state.value.password
             )
+            if(result != "Success"){
+                _state.value = _state.value.copy(message = result)
+                return@launch
+            }
             onSuccessfulLogin()
         }
     }
@@ -45,5 +52,6 @@ class LoginScreenViewModel@Inject constructor(
 
 data class LoginScreenState(
     val email: String = "",
-    val password: String = ""
+    val password: String = "",
+    val message: String = ""
 )

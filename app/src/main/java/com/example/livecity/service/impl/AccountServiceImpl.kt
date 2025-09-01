@@ -32,8 +32,13 @@ class AccountServiceImpl @Inject constructor(
         user!!.updateProfile(profileUpdates).await()
     }
 
-    override suspend fun authenticate(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password).await()
+    override suspend fun authenticate(email: String, password: String): String {
+        try {
+            auth.signInWithEmailAndPassword(email, password).await()
+            return "Success"
+        }catch (e: Exception){
+            return e.message.toString()
+        }
     }
 
     override suspend fun sendRecoveryEmail(email: String) {
