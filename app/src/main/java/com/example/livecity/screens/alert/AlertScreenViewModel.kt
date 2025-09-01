@@ -95,14 +95,23 @@ class AlertScreenViewModel @Inject constructor(
     fun saveAlert(onSaved: () -> Unit){
         viewModelScope.launch {
             if (_uiState.value.title.isBlank()){
+                _uiState.value = _uiState.value.copy(message = "Title cannot be empty")
                 return@launch
             }
             if (_uiState.value.description.isBlank()){
+                _uiState.value = _uiState.value.copy(message = "Description cannot be empty")
                 return@launch
             }
             if(_uiState.value.type.first.isBlank()){
+                _uiState.value = _uiState.value.copy(message = "Type cannot be empty")
                 return@launch
             }
+
+            if(!_uiState.value.useMyLocation && !_uiState.value.useSetLocation){
+                _uiState.value = _uiState.value.copy(message = "Location cannot be empty")
+                return@launch
+            }
+
             val alert = Evaluation(
                 title = _uiState.value.title,
                 description = _uiState.value.description,
@@ -150,5 +159,6 @@ data class AlertScreenUIState(
     val markerPositionSelectedByUser: LatLng? = null,
     val useMyLocation: Boolean = false,
     val useSetLocation: Boolean = false,
-    val expandedGoogleMaps: Boolean = false
+    val expandedGoogleMaps: Boolean = false,
+    val message: String = ""
 )

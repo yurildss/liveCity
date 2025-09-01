@@ -42,6 +42,7 @@ fun RegisterScreen(
                 message = uiState.message,
                 withDismissAction = true
             )
+            viewModel.clearMessage()
         }
     }
 

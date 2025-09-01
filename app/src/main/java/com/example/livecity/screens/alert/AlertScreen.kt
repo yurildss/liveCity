@@ -1,6 +1,7 @@
 package com.example.livecity.screens.alert
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -20,6 +21,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +43,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AlertScreen(
@@ -47,31 +51,33 @@ fun AlertScreen(
     viewModel: AlertScreenViewModel = hiltViewModel()
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    if(!uiState.expandedGoogleMaps){
-        AlertForm(
-            uiState = uiState,
-            onTitleChange = viewModel::setTitle,
-            onDescriptionChange = viewModel::setDescription,
-            listOfAlerts = uiState.listOfAlerts,
-            type = viewModel::setType,
-            typeSelected = uiState.type.first,
-            updateExpanded = viewModel::updateExpanded,
-            addLocation = viewModel::setExpandedGoogleMaps,
-            onSaveClick = { viewModel.saveAlert(onSaved) },
-            onSaved = onSaved
-        )
-    }
-    if (uiState.expandedGoogleMaps) {
-        UserLocationMap(
-            onMapLoad = viewModel::onMapLoaded,
-            setCurrLocation = viewModel::setCurrentLocation,
-            markerPosition = uiState.markerPositionSelectedByUser,
-            setMarkerPosition = viewModel::setMarkerPositionSelectedByUser,
-            setUseMyLocation = viewModel::setUseMyLocation,
-            setUseSetLocation = viewModel::setUseSetLocation,
-            updateExpanded = viewModel::setExpandedGoogleMaps
-        )
+    val snackBarHostState = remember { SnackbarHostState() }
+    Scaffold {
+        if(!uiState.expandedGoogleMaps){
+            AlertForm(
+                uiState = uiState,
+                onTitleChange = viewModel::setTitle,
+                onDescriptionChange = viewModel::setDescription,
+                listOfAlerts = uiState.listOfAlerts,
+                type = viewModel::setType,
+                typeSelected = uiState.type.first,
+                updateExpanded = viewModel::updateExpanded,
+                addLocation = viewModel::setExpandedGoogleMaps,
+                onSaveClick = { viewModel.saveAlert(onSaved) },
+                onSaved = onSaved
+            )
+        }
+        if (uiState.expandedGoogleMaps) {
+            UserLocationMap(
+                onMapLoad = viewModel::onMapLoaded,
+                setCurrLocation = viewModel::setCurrentLocation,
+                markerPosition = uiState.markerPositionSelectedByUser,
+                setMarkerPosition = viewModel::setMarkerPositionSelectedByUser,
+                setUseMyLocation = viewModel::setUseMyLocation,
+                setUseSetLocation = viewModel::setUseSetLocation,
+                updateExpanded = viewModel::setExpandedGoogleMaps
+            )
+        }
     }
 }
 
