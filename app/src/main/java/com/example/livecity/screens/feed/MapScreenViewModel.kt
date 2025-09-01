@@ -45,7 +45,7 @@ class MapScreenViewModel @Inject constructor(
             alerts.forEach {
                 alertList.add(it.toClusterItem())
             }
-            Log.d("Cluster", "Adicionando ${alertList.size} items")
+
             _uiState.value = _uiState.value.copy(listOfEvaluations = alertList)
         }
     }
@@ -67,11 +67,6 @@ data class MapScreenUIState(
             icon = Icons.Default.Home,
             description = "Home",
             testTag = "homeScreen"
-        ),
-        NavItem(
-            icon = Icons.Default.Search,
-            description = "Search",
-            testTag = "searchScreen"
         ),
         NavItem(
             icon = Icons.Default.AddCircle,

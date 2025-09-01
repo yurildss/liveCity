@@ -116,7 +116,7 @@ fun AlertsCard(
                 contentDescription = "Date",
                 modifier = Modifier.padding(10.dp)
             )
-            Text(text = evaluation?.date.toString(),
+            Text(text = evaluation?.formatDate.toString(),
                 fontSize = 18.sp,
                 color = Color.Black,
                 modifier = Modifier.padding(10.dp)

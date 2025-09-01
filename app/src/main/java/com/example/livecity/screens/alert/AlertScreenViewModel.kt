@@ -112,6 +112,8 @@ class AlertScreenViewModel @Inject constructor(
                 return@launch
             }
 
+            val formatedAddress = getFormattedAddress()
+
             val alert = Evaluation(
                 title = _uiState.value.title,
                 description = _uiState.value.description,
@@ -123,7 +125,7 @@ class AlertScreenViewModel @Inject constructor(
                 },
                 userId = currentUserId,
                 dateClose = null, closed = false,
-                formattedAddress = getFormattedAddress()
+                formattedAddress = formatedAddress
             )
 
             storageService.saveAlert(alert)
