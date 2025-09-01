@@ -55,6 +55,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 fun FeedMapScreen(
     onAlertSaved: () -> Unit,
     onLogOut: () -> Unit,
+    onMyAlertsClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MapScreenViewModel = hiltViewModel()
 ){
@@ -85,7 +86,8 @@ fun FeedMapScreen(
                         onSaved = onAlertSaved
                     )
                     "accountScreen" -> AccountScreen(
-                        onLogOut = onLogOut
+                        onLogOut = onLogOut,
+                        onMyAlertsClick = onMyAlertsClick
                     )
                 }
             }

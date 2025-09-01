@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.livecity.screens.feed.FeedMapScreen
 import com.example.livecity.screens.login.LoginScreen
+import com.example.livecity.screens.myReviews.MyAlertsScreen
 import com.example.livecity.screens.navigation.Destination
 import com.example.livecity.screens.openscreen.Greeting
 import com.example.livecity.screens.register.RegisterScreen
@@ -41,8 +42,13 @@ fun LiveCityApp(navController: NavHostController = rememberNavController()){
                     popUpTo(Destination.OPEN_SCREEN.name){
                         inclusive = true
                     }
-                } }
+                } },
+                onMyAlertsClick = { navController.navigate(Destination.MY_ALERTS_SCREEN.name) }
             )
+        }
+
+        composable(Destination.MY_ALERTS_SCREEN.name){
+            MyAlertsScreen()
         }
     }
 }

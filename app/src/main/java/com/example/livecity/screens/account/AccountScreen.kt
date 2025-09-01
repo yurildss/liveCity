@@ -18,6 +18,7 @@ import com.example.livecity.model.User
 @Composable
 fun AccountScreen(
     onLogOut: () -> Unit,
+    onMyAlertsClick: () -> Unit,
     viewModel: AccountScreenViewModel = hiltViewModel()
 ){
     val userName = viewModel.userName.collectAsStateWithLifecycle()
@@ -26,7 +27,7 @@ fun AccountScreen(
         userName = userName.value,
         onMyInfosClick = {  },
         onChangePasswordClick = {  },
-        onMyAlertsClick = {  },
+        onMyAlertsClick = onMyAlertsClick,
         onLogoutClick = {
             viewModel.logOut(onLogOut)
         }

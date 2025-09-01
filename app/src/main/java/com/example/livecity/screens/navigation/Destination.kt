@@ -6,4 +6,5 @@ enum class Destination {
     REGISTER_SCREEN,
     LOGIN_SCREEN,
     OPEN_SCREEN,
+    MY_ALERTS_SCREEN
 }
