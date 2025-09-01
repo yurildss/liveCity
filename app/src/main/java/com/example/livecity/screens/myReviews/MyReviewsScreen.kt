@@ -37,21 +37,25 @@ fun MyAlertsScreen(
 
 @Composable
 fun AlertsList(myAlerts: List<Evaluation?>){
-    LazyColumn {
-        if (myAlerts.isNotEmpty()){
-            items(myAlerts.size){ index ->
-                AlertsCard(evaluation = myAlerts[index])
-            }
-        }else{
-            item {
-                Column(verticalArrangement = Arrangement.Center) {
+    if(myAlerts.isEmpty()){
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
                     Text(
                         text = "No alerts yet",
                         color = Color.Black,
                         fontSize = 20.sp,
                     )
                 }
-            }
+    }else{
+        LazyColumn {
+                items(myAlerts.size){ index ->
+                    AlertsCard(evaluation = myAlerts[index])
+                }
         }
     }
 }
