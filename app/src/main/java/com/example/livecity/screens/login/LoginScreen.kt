@@ -35,7 +35,6 @@ fun LoginScreen(
     viewModel: LoginScreenViewModel = hiltViewModel()
 ){
     val uiState by viewModel.state.collectAsStateWithLifecycle()
-    val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(uiState.message) {

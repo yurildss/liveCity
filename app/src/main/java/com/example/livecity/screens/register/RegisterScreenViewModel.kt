@@ -33,25 +33,34 @@ class RegisterScreenViewModel @Inject constructor(
         _state.value = _state.value.copy(confirmPassword = newConfirmPassword)
     }
 
+    fun clearMessage(){
+        _state.value = _state.value.copy(message = "")
+    }
+
     fun onRegisterClick(
         onSuccessfulRegister: () -> Unit
     ){
         viewModelScope.launch {
             if (state.value.email.isBlank()) {
+                _state.value = _state.value.copy(message = "Email cannot be empty")
                 return@launch
             }
             if (state.value.nome.isBlank()) {
+                _state.value = _state.value.copy(message = "Name cannot be empty")
                 return@launch
             }
 
             if (state.value.password.isBlank()) {
+                _state.value = _state.value.copy(message = "Password cannot be empty")
                 return@launch
             }
             if (state.value.confirmPassword.isBlank()) {
+                _state.value = _state.value.copy(message = "Confirm Password cannot be empty")
                 return@launch
             }
 
             if (state.value.password != state.value.confirmPassword) {
+                _state.value = _state.value.copy(message = "Passwords do not match")
                 return@launch
             }
             try {
@@ -62,7 +71,7 @@ class RegisterScreenViewModel @Inject constructor(
                 )
                 onSuccessfulRegister()
             }catch (e: Exception){
-
+                _state.value = _state.value.copy(message = e.message ?: "Unknown error")
             }
         }
     }
@@ -72,5 +81,6 @@ data class RegisterScreenState(
     val email: String = "",
     val nome: String = "",
     val password: String = "",
-    val confirmPassword: String = ""
+    val confirmPassword: String = "",
+    val message: String = ""
 )
