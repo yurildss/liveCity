@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.livecity.R
 import com.example.livecity.model.Evaluation
+import com.example.livecity.util.getIconResByName
 
 @Composable
 fun MyAlertsScreen(
@@ -52,7 +53,11 @@ fun AlertsList(myAlerts: List<Evaluation?>){
                     )
                 }
     }else{
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 20.dp)
+        ) {
                 items(myAlerts.size){ index ->
                     AlertsCard(evaluation = myAlerts[index])
                 }
@@ -80,7 +85,7 @@ fun AlertsCard(
                 modifier = Modifier.padding(10.dp)
             )
             Icon(
-                painter = painterResource(id = R.drawable.car_crash_50dp_ea3323_fill0_wght400_grad0_opsz48),
+                painter = painterResource(id = getIconResByName(evaluation?.type?.alertImage ?: "")),
                 contentDescription = "Car crash icon",
                 modifier = Modifier.padding(10.dp)
             )

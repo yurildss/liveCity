@@ -142,7 +142,6 @@ fun Map(
                 val clusterManager = ClusterManager<MyClusterItem>(context, map)
                 clusterManager.renderer = MyClusterRenderer(context, map, clusterManager)
 
-                Log.d("Cluster", "Adicionando ${listOfAlerts.size} items")
                 clusterManager.addItems(listOfAlerts)
                 clusterManager.cluster()
 
