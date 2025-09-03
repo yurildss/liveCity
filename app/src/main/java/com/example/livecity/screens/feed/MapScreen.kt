@@ -143,6 +143,19 @@ fun Map(
                 clusterManager.renderer = MyClusterRenderer(context, map, clusterManager)
 
                 clusterManager.addItems(listOfAlerts)
+                clusterManager.setOnClusterClickListener(
+                    ClusterManager.OnClusterClickListener { cluster ->
+                        val center = cluster.position
+                        cameraPositionState.position = CameraPosition.fromLatLngZoom(center, 15f)
+                        true
+                    }
+                )
+                clusterManager.setOnClusterItemClickListener(
+                    ClusterManager.OnClusterItemClickListener { item ->
+                        Log.d("MapScreen", "Cluster item clicked: ${item.title}")
+                        true
+                    }
+                )
                 clusterManager.cluster()
 
                 map.setOnCameraIdleListener(clusterManager)
@@ -153,4 +166,3 @@ fun Map(
         }
     }
 }
-

@@ -1,7 +1,6 @@
 package com.example.livecity.network
 
 import android.util.Log
-import com.google.maps.android.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 
