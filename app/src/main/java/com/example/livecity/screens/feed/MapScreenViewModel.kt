@@ -1,15 +1,9 @@
 package com.example.livecity.screens.feed
 
-import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,10 +30,6 @@ class MapScreenViewModel @Inject constructor(
 
     fun onNavItemClicked(navItem: NavItem){
         _uiState.value = _uiState.value.copy(selectedNavItem = navItem)
-    }
-
-    fun onMapLoaded(){
-        _uiState.value = _uiState.value.copy(isMapLoaded = true)
     }
 
     fun changeBottomSheetState(){
