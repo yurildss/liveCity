@@ -58,12 +58,18 @@ class MapScreenViewModel @Inject constructor(
         }
     }
 
+    fun onClusterItemClick(item: MyClusterItem){
+        _uiState.value = _uiState.value.copy(actualItem = item)
+    }
+
     fun Evaluation.toClusterItem(): MyClusterItem {
         return MyClusterItem(
             position = LatLng(position!!.latitude, position.longitude),
             title = title,
             snippet = description,
-            iconResId = type.alertImage
+            iconResId = type.alertImage,
+            formattedAddress = formattedAddress,
+            date = formatDate
         )
     }
 
@@ -91,7 +97,8 @@ data class MapScreenUIState(
     val isMapLoaded: Boolean = false,
     val listOfAlerts: MutableList<Pair<Double, Double>> = mutableListOf(),
     val listOfEvaluations: List<MyClusterItem> = emptyList(),
-    val showBottomSheet: Boolean = false
+    val showBottomSheet: Boolean = false,
+    val actualItem: MyClusterItem? = null
 )
 
 data class NavItem(
@@ -104,7 +111,9 @@ data class MyClusterItem(
     private val position: LatLng,
     private val title: String,
     private val snippet: String,
-    val iconResId: String
+    val iconResId: String,
+    val formattedAddress: String,
+    val date: String,
 ) : ClusterItem {
     override fun getPosition(): LatLng = position
     override fun getTitle(): String = title
