@@ -29,7 +29,15 @@ Assim, os cidadãos podem colaborar entre si e com órgãos públicos, criando u
 ---
 
 ## 📷 Protótipo / Screenshots
----
+<img width="216" height="480" alt="image" src="https://github.com/user-attachments/assets/dc67703e-ce08-443d-8e8f-7c826a7b4eb8" />
+<img width="216" height="480" alt="image" src="https://github.com/user-attachments/assets/1381e7a8-237a-4772-99d1-48fcb8c4231f" />
+<img width="216" height="480" alt="image" src="https://github.com/user-attachments/assets/d0447411-4041-42c4-9c19-730e6f7dc9e7" />
+<img width="216" height="480" alt="image" src="https://github.com/user-attachments/assets/c8ff690a-4359-4f5b-9d5e-23d1343ad5b9" />
+<img width="216" height="480" alt="image" src="https://github.com/user-attachments/assets/fad6fb5f-c5b0-4eec-a83e-cd51bfb152d1" />
+<img width="216" height="480" alt="image" src="https://github.com/user-attachments/assets/e946b2aa-3bfa-478b-825c-50848d4d9c98" />
+<img width="216" height="480" alt="image" src="https://github.com/user-attachments/assets/8fd6d599-4f26-418f-a821-0b2d38040714" />
+<img width="216" height="480" alt="image" src="https://github.com/user-attachments/assets/5318ae2b-01cf-4127-89f6-f792a27b02bc" />
+
 
 ## 🚀 Como rodar o projeto
 
