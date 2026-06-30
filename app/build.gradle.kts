@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -53,6 +52,11 @@ android {
     }
 }
 
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "local.defaults.properties"
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -64,6 +68,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
+    testImplementation("io.mockk:mockk:1.13.7")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("app.cash.turbine:turbine:1.0.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -80,6 +87,8 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.56.2")
     ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.56.2")
+    kspAndroidTest("com.google.dagger:hilt-android-compiler:2.56.2")
 
     // Android Maps Compose composables for the Maps SDK for Android
     implementation("com.google.maps.android:maps-compose:6.7.1")
@@ -89,15 +98,16 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-permissions:0.36.0")
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-// Retrofit with Kotlin serialization Converter
-
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+     // Retrofit with Kotlin serialization Converter
+     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
 
     // Kotlin serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    // GSON for serialization
+    implementation("com.google.code.gson:gson:2.10.1")
     testImplementation(kotlin("test"))
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }

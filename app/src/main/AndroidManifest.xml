@@ -20,9 +20,12 @@
         android:name=".LiveCityApplication"
         android:theme="@style/Theme.LiveCity"
         tools:targetApi="31">
+        <!-- Google Maps API Key configuration
+             Add GOOGLE_MAPS_API_KEY to secrets.properties or local.defaults.properties
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${GOOGLE_MAPS_API_KEY}" />
+        -->
 
         <activity
             android:name=".MainActivity"
